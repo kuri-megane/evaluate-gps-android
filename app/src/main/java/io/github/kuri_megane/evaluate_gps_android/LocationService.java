@@ -147,7 +147,7 @@ public class LocationService extends Service implements LocationListener{
         strBuf.append(str);
 
         SimpleDateFormat sdf = new SimpleDateFormat("YYYY/MM/dd HH:mm:ss");
-        sdf.setTimeZone(TimeZone.getTimeZone("Asia/Tokyo"));
+        // sdf.setTimeZone(TimeZone.getTimeZone("Asia/Tokyo"));
         String currentTime = sdf.format(location.getTime());
 
         str = "# Time = " + currentTime + "\n";
@@ -161,7 +161,7 @@ public class LocationService extends Service implements LocationListener{
 
         strBuf.append("# ----------\n");
 
-        str = currentTime
+        str = currentTime + ","
                 + String.valueOf(location.getLongitude()) + ","
                 + String.valueOf(location.getLatitude()) + ","
                 + String.valueOf(location.getAltitude()) + ","
