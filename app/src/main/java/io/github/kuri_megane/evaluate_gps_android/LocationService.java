@@ -1,6 +1,7 @@
 package io.github.kuri_megane.evaluate_gps_android;
 
 //AndroidX
+
 import androidx.core.app.ActivityCompat;
 //import android.support.v4.app.ActivityCompat;
 
@@ -14,8 +15,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.icu.text.SimpleDateFormat;
-import android.icu.util.TimeZone;
+// import android.icu.text.SimpleDateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
+//import android.icu.util.Calendar;
+//import android.icu.util.TimeZone;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -24,9 +29,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.Settings;
-import android.util.Log;
+//import android.util.Log;
 
-public class LocationService extends Service implements LocationListener{
+public class LocationService extends Service implements LocationListener {
 
     private LocationManager locationManager;
     private Context context;
@@ -61,36 +66,38 @@ public class LocationService extends Service implements LocationListener{
 
         // ForegroundにするためNotificationが必要、Contextを設定
         NotificationManager notificationManager =
-                (NotificationManager)context.
+                (NotificationManager) context.
                         getSystemService(Context.NOTIFICATION_SERVICE);
 
         // Notification　Channel 設定
-        NotificationChannel channel = new NotificationChannel(
-                channelId, title , NotificationManager.IMPORTANCE_DEFAULT);
-        channel.setDescription("Silent Notification");
-        // 通知音を消さないと毎回通知音が出てしまう
-        // この辺りの設定はcleanにしてから変更
-        channel.setSound(null,null);
-        // 通知ランプを消す
-        channel.enableLights(false);
-        channel.setLightColor(Color.BLUE);
-        // 通知バイブレーション無し
-        channel.enableVibration(false);
+        if (Build.VERSION.SDK_INT >= 26) {
+            NotificationChannel channel = new NotificationChannel(
+                    channelId, title, NotificationManager.IMPORTANCE_DEFAULT);
+            channel.setDescription("Silent Notification");
+            // 通知音を消さないと毎回通知音が出てしまう
+            // この辺りの設定はcleanにしてから変更
+            channel.setSound(null, null);
+            // 通知ランプを消す
+            channel.enableLights(false);
+            channel.setLightColor(Color.BLUE);
+            // 通知バイブレーション無し
+            channel.enableVibration(false);
 
-        if(notificationManager != null) {
-            notificationManager.createNotificationChannel(channel);
-            Notification notification = new Notification.Builder(context, channelId)
-                    .setContentTitle(title)
-                    // 本来なら衛星のアイコンですがandroid標準アイコンを設定
-                    .setSmallIcon(android.R.drawable.btn_star)
-                    .setContentText("GPS")
-                    .setAutoCancel(true)
-                    .setContentIntent(pendingIntent)
-                    .setWhen(System.currentTimeMillis())
-                    .build();
+            if (notificationManager != null) {
+                notificationManager.createNotificationChannel(channel);
+                Notification notification = new Notification.Builder(context, channelId)
+                        .setContentTitle(title)
+                        // 本来なら衛星のアイコンですがandroid標準アイコンを設定
+                        .setSmallIcon(android.R.drawable.btn_star)
+                        .setContentText("GPS")
+                        .setAutoCancel(true)
+                        .setContentIntent(pendingIntent)
+                        .setWhen(System.currentTimeMillis())
+                        .build();
 
-            // startForeground
-            startForeground(1, notification);
+                // startForeground
+                startForeground(1, notification);
+            }
         }
 
         startGPS();
@@ -112,7 +119,7 @@ public class LocationService extends Service implements LocationListener{
         if (locationManager != null) {
             try {
                 if (ActivityCompat.checkSelfPermission(this,
-                        Manifest.permission.ACCESS_FINE_LOCATION)!=
+                        Manifest.permission.ACCESS_FINE_LOCATION) !=
                         PackageManager.PERMISSION_GRANTED) {
                     return;
                 }
@@ -134,7 +141,7 @@ public class LocationService extends Service implements LocationListener{
 
         strBuf.append("#----------\n");
 
-        String str = "# Latitude = " +String.valueOf(location.getLatitude()) + "\n";
+        String str = "# Latitude = " + String.valueOf(location.getLatitude()) + "\n";
         strBuf.append(str);
 
         str = "# Longitude = " + String.valueOf(location.getLongitude()) + "\n";
@@ -146,8 +153,7 @@ public class LocationService extends Service implements LocationListener{
         str = "# Altitude = " + String.valueOf(location.getAltitude()) + "\n";
         strBuf.append(str);
 
-        SimpleDateFormat sdf = new SimpleDateFormat("YYYY/MM/dd HH:mm:ss");
-        // sdf.setTimeZone(TimeZone.getTimeZone("Asia/Tokyo"));
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.JAPAN);
         String currentTime = sdf.format(location.getTime());
 
         str = "# Time = " + currentTime + "\n";
@@ -184,10 +190,11 @@ public class LocationService extends Service implements LocationListener{
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
-        // Android 6, API 23以上でパーミッシンの確認
-        if(Build.VERSION.SDK_INT <= 28){
-            StringBuilder strBuf = new StringBuilder();
 
+        StringBuilder strBuf = new StringBuilder();
+
+        // Android 6, API 23以上でパーミッシンの確認
+        if (Build.VERSION.SDK_INT <= 28) {
             switch (status) {
                 case LocationProvider.AVAILABLE:
                     //strBuf.append("LocationProvider.AVAILABLE\n");
@@ -199,9 +206,9 @@ public class LocationService extends Service implements LocationListener{
                     strBuf.append("LocationProvider.TEMPORARILY_UNAVAILABLE\n");
                     break;
             }
-
-            fileReadWrite.writeFile(strBuf.toString(), true);
         }
+
+        fileReadWrite.writeFile(strBuf.toString(), true);
     }
 
     private void enableLocationSettings() {
@@ -209,7 +216,7 @@ public class LocationService extends Service implements LocationListener{
         startActivity(settingsIntent);
     }
 
-    private void stopGPS(){
+    private void stopGPS() {
         if (locationManager != null) {
             // update を止める
             if (ActivityCompat.checkSelfPermission(this,

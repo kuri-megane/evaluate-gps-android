@@ -4,7 +4,7 @@ package io.github.kuri_megane.evaluate_gps_android;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
+//import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 //import android.support.v7.app.AppCompatActivity;
 //import android.support.annotation.NonNull;
@@ -141,7 +141,11 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplication(), LocationService.class);
 
                 // API 26 以降
-                startForegroundService(intent);
+                if (Build.VERSION.SDK_INT >= 26) {
+                    startForegroundService(intent);
+                } else {
+                    startService(intent);
+                }
 
                 // Activityを終了させる
                 finish();
