@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -163,8 +162,6 @@ public class MainActivity extends AppCompatActivity {
     // トーストの生成
     private void toastMake(String message) {
         Toast toast = Toast.makeText(this, message, Toast.LENGTH_LONG);
-        // 位置調整
-        toast.setGravity(Gravity.CENTER, 0, 200);
         toast.show();
     }
 }
