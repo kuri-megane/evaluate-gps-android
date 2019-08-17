@@ -132,34 +132,44 @@ public class LocationService extends Service implements LocationListener{
 
         StringBuilder strBuf = new StringBuilder();
 
-        strBuf.append("----------\n");
+        strBuf.append("#----------\n");
 
-        String str = "Latitude = " +String.valueOf(location.getLatitude()) + "\n";
+        String str = "# Latitude = " +String.valueOf(location.getLatitude()) + "\n";
         strBuf.append(str);
 
-        str = "Longitude = " + String.valueOf(location.getLongitude()) + "\n";
+        str = "# Longitude = " + String.valueOf(location.getLongitude()) + "\n";
         strBuf.append(str);
 
-        str = "Accuracy = " + String.valueOf(location.getAccuracy()) + "\n";
+        str = "# Accuracy = " + String.valueOf(location.getAccuracy()) + "\n";
         strBuf.append(str);
 
-        str = "Altitude = " + String.valueOf(location.getAltitude()) + "\n";
+        str = "# Altitude = " + String.valueOf(location.getAltitude()) + "\n";
         strBuf.append(str);
 
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd HH:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("YYYY/MM/dd HH:mm:ss");
         sdf.setTimeZone(TimeZone.getTimeZone("Asia/Tokyo"));
         String currentTime = sdf.format(location.getTime());
 
-        str = "Time = " + currentTime + "\n";
+        str = "# Time = " + currentTime + "\n";
         strBuf.append(str);
 
-        str = "Speed = " + String.valueOf(location.getSpeed()) + "\n";
+        str = "# Speed = " + String.valueOf(location.getSpeed()) + "\n";
         strBuf.append(str);
 
-        str = "Bearing = " + String.valueOf(location.getBearing()) + "\n";
+        str = "# Bearing = " + String.valueOf(location.getBearing()) + "\n";
         strBuf.append(str);
 
-        strBuf.append("----------\n");
+        strBuf.append("# ----------\n");
+
+        str = currentTime
+                + String.valueOf(location.getLongitude()) + ","
+                + String.valueOf(location.getLatitude()) + ","
+                + String.valueOf(location.getAltitude()) + ","
+                + String.valueOf(location.getAccuracy()) + ","
+                + location.getSpeed() + ","
+                + location.getBearing() + ","
+                + "\n";
+        strBuf.append(str);
 
         fileReadWrite.writeFile(strBuf.toString(), true);
     }
