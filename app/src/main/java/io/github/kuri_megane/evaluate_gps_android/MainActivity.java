@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 // Activityを終了させる
-                finish();
+                // finish();
             }
         });
 
