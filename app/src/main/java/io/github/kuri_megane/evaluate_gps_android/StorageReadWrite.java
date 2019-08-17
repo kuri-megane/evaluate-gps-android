@@ -22,7 +22,7 @@ class StorageReadWrite {
         file = new File(path, "log.txt");
     }
 
-    void clearFile(){
+    void clearFile() {
         // ファイルをクリア
         writeFile("", false);
 
@@ -33,13 +33,13 @@ class StorageReadWrite {
     // ファイルを保存
     void writeFile(String gpsLog, boolean mode) {
 
-        if(isExternalStorageWritable()){
-            try(FileOutputStream fileOutputStream =
-                        new FileOutputStream(file, mode);
-                OutputStreamWriter outputStreamWriter =
-                        new OutputStreamWriter(fileOutputStream, StandardCharsets.UTF_8);
-                BufferedWriter bw =
-                        new BufferedWriter(outputStreamWriter);
+        if (isExternalStorageWritable()) {
+            try (FileOutputStream fileOutputStream =
+                         new FileOutputStream(file, mode);
+                 OutputStreamWriter outputStreamWriter =
+                         new OutputStreamWriter(fileOutputStream, StandardCharsets.UTF_8);
+                 BufferedWriter bw =
+                         new BufferedWriter(outputStreamWriter)
             ) {
 
                 bw.write(gpsLog);
@@ -56,20 +56,20 @@ class StorageReadWrite {
         stringBuffer = new StringBuffer();
 
         // 現在ストレージが読出しできるかチェック
-        if(isExternalStorageReadable()){
+        if (isExternalStorageReadable()) {
 
-            try(FileInputStream fileInputStream =
-                        new FileInputStream(file);
+            try (FileInputStream fileInputStream =
+                         new FileInputStream(file);
 
-                InputStreamReader inputStreamReader =
-                        new InputStreamReader(fileInputStream, StandardCharsets.UTF_8);
+                 InputStreamReader inputStreamReader =
+                         new InputStreamReader(fileInputStream, StandardCharsets.UTF_8);
 
-                BufferedReader reader=
-                        new BufferedReader(inputStreamReader) ) {
+                 BufferedReader reader =
+                         new BufferedReader(inputStreamReader)) {
 
                 String lineBuffer;
 
-                while( (lineBuffer = reader.readLine()) != null ) {
+                while ((lineBuffer = reader.readLine()) != null) {
                     stringBuffer.append(lineBuffer);
                     stringBuffer.append(System.getProperty("line.separator"));
                 }
@@ -82,7 +82,6 @@ class StorageReadWrite {
 
         return stringBuffer.toString();
     }
-
 
 
     /* Checks if external storage is available for read and write */

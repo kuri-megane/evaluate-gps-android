@@ -1,10 +1,5 @@
 package io.github.kuri_megane.evaluate_gps_android;
 
-//AndroidX
-
-import androidx.core.app.ActivityCompat;
-//import android.support.v4.app.ActivityCompat;
-
 import android.Manifest;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -15,12 +10,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-// import android.icu.text.SimpleDateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Locale;
-
-//import android.icu.util.Calendar;
-//import android.icu.util.TimeZone;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -29,7 +18,17 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.Settings;
-//import android.util.Log;
+
+import androidx.core.app.ActivityCompat;
+
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
+// import android.support.v4.app.ActivityCompat;
+// import android.icu.text.SimpleDateFormat;
+// import android.icu.util.Calendar;
+// import android.icu.util.TimeZone;
+// import android.util.Log;
 
 public class LocationService extends Service implements LocationListener {
 
@@ -141,16 +140,16 @@ public class LocationService extends Service implements LocationListener {
 
         strBuf.append("#----------\n");
 
-        String str = "# Latitude = " + String.valueOf(location.getLatitude()) + "\n";
+        String str = "# Latitude = " + location.getLatitude() + "\n";
         strBuf.append(str);
 
-        str = "# Longitude = " + String.valueOf(location.getLongitude()) + "\n";
+        str = "# Longitude = " + location.getLongitude() + "\n";
         strBuf.append(str);
 
-        str = "# Accuracy = " + String.valueOf(location.getAccuracy()) + "\n";
+        str = "# Accuracy = " + location.getAccuracy() + "\n";
         strBuf.append(str);
 
-        str = "# Altitude = " + String.valueOf(location.getAltitude()) + "\n";
+        str = "# Altitude = " + location.getAltitude() + "\n";
         strBuf.append(str);
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.JAPAN);
@@ -159,19 +158,19 @@ public class LocationService extends Service implements LocationListener {
         str = "# Time = " + currentTime + "\n";
         strBuf.append(str);
 
-        str = "# Speed = " + String.valueOf(location.getSpeed()) + "\n";
+        str = "# Speed = " + location.getSpeed() + "\n";
         strBuf.append(str);
 
-        str = "# Bearing = " + String.valueOf(location.getBearing()) + "\n";
+        str = "# Bearing = " + location.getBearing() + "\n";
         strBuf.append(str);
 
         strBuf.append("# ----------\n");
 
         str = currentTime + ","
-                + String.valueOf(location.getLongitude()) + ","
-                + String.valueOf(location.getLatitude()) + ","
-                + String.valueOf(location.getAltitude()) + ","
-                + String.valueOf(location.getAccuracy()) + ","
+                + location.getLongitude() + ","
+                + location.getLatitude() + ","
+                + location.getAltitude() + ","
+                + location.getAccuracy() + ","
                 + location.getSpeed() + ","
                 + location.getBearing() + ","
                 + "\n";
