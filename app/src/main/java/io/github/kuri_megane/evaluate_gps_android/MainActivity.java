@@ -137,6 +137,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        Button buttonStop = findViewById(R.id.button_stop);
+        buttonStop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Serviceの停止
+                Intent intent = new Intent(getApplication(), LocationService.class);
+                stopService(intent);
+            }
+        });
+
         Button buttonLog = findViewById(R.id.button_log);
         buttonLog.setOnClickListener(new View.OnClickListener() {
             @Override
